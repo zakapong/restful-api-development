@@ -33,10 +33,14 @@ var routes= function(Book){
     });
 
     bookRouter.route('/:bookId')
+        .get(function(req,res){
 
-        .get(function(req, res){
+            var returnBook = req.book.toJSON();
 
-            res.json(req.book);
+            returnBook.links = {};
+            var newLink = 'http://' + req.headers.host + '/api/books/?genre=' + returnBook.genre;
+            returnBook.links.FilterByThisGenre = newLink.replace(' ', '%20');
+            res.json(returnBook);
 
         })
         .put(function(req, res){
